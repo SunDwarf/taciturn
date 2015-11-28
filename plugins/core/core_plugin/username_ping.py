@@ -30,5 +30,6 @@ def version_ping(data, *args: list):
     # Get topic ID.
     topic_id = data[0]["topic_id"]
     # Post a new message.
-    client.create_post(gettext("My version is %(version).", version='.'.join(map(str, __version__))), topic_id=topic_id)
+    client.create_post(gettext("My version is %(version)s.", version='.'.join(map(str, __version__))),
+        topic_id=topic_id)
 

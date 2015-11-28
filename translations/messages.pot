@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-28 18:45+0000\n"
+"POT-Creation-Date: 2015-11-28 18:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Generated-By: Babel 2.1.1\n"
 
 #: plugins/core/core_plugin/username_ping.py:33
-msgid "My version is %(version)."
+#, python-format
+msgid "My version is %(version)s."
 msgstr ""
 
 #: taciturn/discourse_client.py:5
