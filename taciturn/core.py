@@ -1,7 +1,7 @@
-from celery import Celery
 from celery import __version__ as cver
-from flask import Blueprint, g
+from flask import Blueprint
 from flask import __version__ as fver
+from app import celery, app
 
 from pprint import pformat
 
@@ -11,8 +11,7 @@ core_bp = Blueprint('core', "tacticum",
 @core_bp.route("/")
 def root():
     # Get inspect instance
-    assert isinstance(g.celery, Celery)
-    i = g.celery.control.inspect()
+    i = celery.control.inspect()
 
     reg = i.registered()
     queue = i.active()
@@ -43,9 +42,9 @@ Celery queue:
 {queue}
 
 All systems nominal.
-""""".format(ver='.'.join(map(str, g.app.config["TACITURN_VERSION"])), broker=g.app.config["CELERY_BROKER_URL"],
-    app=g.app, reg=pformat(reg), queue=pformat(queue), fver=fver, cver=cver,
+""""".format(ver='.'.join(map(str, app.config["TACITURN_VERSION"])), broker=app.config["CELERY_BROKER_URL"],
+    app=app, reg=pformat(reg), queue=pformat(queue), fver=fver, cver=cver,
     debug=" serving on {}:{}".format(
-        g.app.config["DEBUG_HOST"], g.app.config["DEBUG_PORT"])
-    if g.app.config["DEBUG"] else None)
+        app.config["DEBUG_HOST"], app.config["DEBUG_PORT"])
+    if app.config["DEBUG"] else None)
     return fmt, 200, {"Content-Type": "text/plain"}

@@ -1,10 +1,9 @@
 from pprint import pprint, pformat
 
-from celery import Celery
-from flask import Blueprint, g
+from flask import Blueprint
 from flask import request
 
-from . import processing
+from taciturn import processing
 
 hooks_bp = Blueprint('hooks', "tacticum",
                     url_prefix="/hooks")
@@ -21,7 +20,10 @@ def topic_created():
     valid = processing.verify(request.get_json())
 
     if not valid:
-        return "NO", 200, {"Content-Type": "text/plain"}
+        return "NO", 400, {"Content-Type": "text/plain"}
+
+    # Create a new processing task.
+    processing.process.delay(request.get_json()[1:], 1)
 
     return "OK", 200, {"Content-Type": "text/plain"}
 
@@ -33,9 +35,9 @@ def post_created():
     valid = processing.verify(request.get_json())
 
     if not valid:
-        return "NO", 200, {"Content-Type": "text/plain"}
+        return "NO", 400, {"Content-Type": "text/plain"}
 
     # Create a new processing task.
-    processing.process(request.get_json()[1:])
+    processing.process.delay(request.get_json()[1:], 1)
 
     return "OK", 200, {"Content-Type": "text/plain"}
