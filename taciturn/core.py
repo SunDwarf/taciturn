@@ -5,7 +5,7 @@ from app import celery, app
 
 from pprint import pformat
 
-core_bp = Blueprint('core', "tacticum",
+core_bp = Blueprint('core', "taciturn",
                     template_folder='templates')
 
 @core_bp.route("/")

@@ -2,3 +2,4 @@ Flask
 celery[redis]
 git+https://github.com/tindie/pydiscourse
 requests
+PyYAML

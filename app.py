@@ -2,6 +2,7 @@ import logging
 
 from celery import Celery
 from flask import Flask, g
+import init
 
 __version__ = (0, 1, 0)
 
@@ -13,7 +14,21 @@ app.config.from_object("config")
 # --> Set version
 app.config["TACITURN_VERSION"] = __version__
 
+# --> Setup logging
+formatter = logging.Formatter('%(asctime)s - [%(levelname)s] %(name)s - %(message)s')
+root = logging.getLogger()
+
+root.setLevel(app.config["LOG_LEVEL"])
+
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(formatter)
+root.addHandler(consoleHandler)
+
+logger = logging.getLogger("taciturn")
+
 # --> Init celery
+
+logger.info("Initializing celery...")
 
 def make_celery(app):
     celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
@@ -29,22 +44,22 @@ def make_celery(app):
 
 celery = make_celery(app)
 
+logger.info("Done.")
+
 # --> Create client
 from taciturn.discourse_client import Client
 client = Client(host=app.config["API_FORUM"], api_key=app.config["API_KEY"], api_username=app.config["API_USERNAME"])
 
+logger.info("Created client.")
+
 # --> Init app
-import init
-init.init(app)
+init.core_init(app)
 
-# --> Setup logging
-formatter = logging.Formatter('%(asctime)s - [%(levelname)s] %(name)s - %(message)s')
-root = logging.getLogger()
+logger.info("Loaded taciturn classes.")
 
-root.setLevel(app.config["LOG_LEVEL"])
+# --> Init plugins
+init.plugin_init(app, celery, client)
 
-consoleHandler = logging.StreamHandler()
-consoleHandler.setFormatter(formatter)
-root.addHandler(consoleHandler)
+logger.info("Loaded plugins.")
 
 # --> Done.

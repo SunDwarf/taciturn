@@ -5,11 +5,11 @@ from flask import request
 
 from taciturn import processing
 
-hooks_bp = Blueprint('hooks', "tacticum",
+hooks_bp = Blueprint('hooks', "taciturn",
                     url_prefix="/hooks")
 
 import logging
-logger = logging.getLogger("tacitun")
+logger = logging.getLogger("taciturn")
 
 
 @hooks_bp.route("/topic_created", methods=["POST"])
