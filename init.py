@@ -55,7 +55,8 @@ def plugin_init(app: Flask, celery: Celery, client: Client):
                         except:
                             logger.error("Plugin {} failed to load!".format(name))
                             traceback.print_exc()
-                        plugins[name] = module
+                            break
+                        plugins[name] = (module, dir)
                         # Get init module name.
                         funname = data.get("init_function", "init")
                         if hasattr(module, funname):

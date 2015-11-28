@@ -23,7 +23,7 @@ API_KEY = "yourkeyhere"
 API_USERNAME = "taciturn"
 
 # The domain of the forum to work on.
-API_FORUM = "www.example.com"
+API_FORUM = "http://www.example.com"
 
 # Set logging level
 LOG_LEVEL = logging.INFO

@@ -1,7 +1,9 @@
 import logging
-from flask import Flask
+from celery import group
 
 from app import app, celery, client
+from taciturn import registry
+
 
 logger = logging.getLogger("taciturn")
 
@@ -30,6 +32,17 @@ def verify(request):
 @celery.task
 def process(data, ptype):
     task_logger.info("Entered processor, type {}".format(ptype))
+
+    if ptype == 0:
+        g = group(func.s(data) for func in registry.topic_created_registry.values())
+    elif ptype == 1:
+        g = group(func.s(data) for func in registry.post_created_registry.values())
+    else:
+        task_logger.error("Unable to handle event of type {}".format(ptype))
+        return
+
+    # Call the group.
+    g.apply_async()
 
 
 

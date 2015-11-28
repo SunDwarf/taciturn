@@ -2,8 +2,8 @@ from pydiscourse import client
 
 from flask.ext.babel import gettext, ngettext
 
-footer = gettext("\n------\n*I am a bot, this message was sent automatically.*\nPowered by [taciturn]("
-                 "https://github.com/SunDwarf/taciturn).")
+footer = gettext("\n\n------\n*I am a bot, this message was sent automatically.*\nPowered by [taciturn.]("
+                 "https://github.com/SunDwarf/taciturn)")
 
 class Client(client.DiscourseClient):
     def close(self, topic_id, **kwargs):
@@ -14,4 +14,4 @@ class Client(client.DiscourseClient):
 
     def create_post(self, content, **kwargs):
         content = content + footer
-        super().create_post(content, kwargs)
+        super().create_post(content, **kwargs)

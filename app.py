@@ -1,5 +1,7 @@
 import logging
+import traceback
 
+import sys
 from celery import Celery
 from flask import Flask
 from flask.ext.babel import Babel
@@ -39,7 +41,7 @@ logger.info("taciturn starting up...")
 
 # --> Init celery
 
-logger.info("Initializing celery...")
+logger.info("Initializing celery connector...")
 
 def make_celery(app):
     celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
@@ -55,21 +57,33 @@ def make_celery(app):
 
 celery = make_celery(app)
 
-logger.info("Done.")
+logger.info("Celery connector created...")
 
 # --> Create client
+logger.info("Creating client...")
 from taciturn.discourse_client import Client
 client = Client(host=app.config["API_FORUM"], api_key=app.config["API_KEY"], api_username=app.config["API_USERNAME"])
+
+logger.info("Testing client connectivity...")
+
+try:
+    client.categories()
+except Exception as e:
+    traceback.print_exc()
+    logger.error("Unable to connect - aborting.")
+    sys.exit(1)
 
 logger.info("Created client.")
 
 # --> Init app
+logger.info("Loading application...")
 init.core_init(app)
 
 logger.info("Loaded taciturn classes.")
 
 # --> Init plugins
-init.plugin_init(app, celery, client)
+logger.info("Loading plugins...")
+plugins = init.plugin_init(app, celery, client)
 
 logger.info("Loaded plugins.")
 
