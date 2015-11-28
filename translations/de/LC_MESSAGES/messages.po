@@ -1,0 +1,23 @@
+# German translations for Taciturn.
+# Copyright (C) 2015 Nils Theres
+# This file is distributed under the same license as the Taciturn project.
+
+#: plugins/core/core_plugin/username_ping.py:33
+#, python-format
+msgid "My version is %(version)s."
+msgstr "Meine Version ist %(version)s."
+
+#: taciturn/discourse_client.py:5
+msgid ""
+"\n"
+"\n"
+"------\n"
+"*I am a bot, this message was sent automatically.*\n"
+"Powered by [taciturn.](https://github.com/SunDwarf/taciturn)"
+msgstr ""
+"\n"
+"\n"
+"------\n"
+"Ich bin ein Bot, diese Nachricht wurde automatisch versendet.\n"
+"Erstellt von [taciturn.] https://github.com/SunDwarf/taciturn)"
+

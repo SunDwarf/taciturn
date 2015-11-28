@@ -33,6 +33,9 @@ def verify(request):
 def process(data, ptype):
     task_logger.info("Entered processor, type {}".format(ptype))
 
+    if data[2]["username"] == app.config["API_USERNAME"]:
+        return
+
     if ptype == 0:
         g = group(func.s(data) for func in registry.topic_created_registry.values())
     elif ptype == 1:
