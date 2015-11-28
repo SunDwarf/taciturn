@@ -1,4 +1,4 @@
-from pprint import pprint, pformat
+from pprint import pformat
 
 from flask import Blueprint
 from flask import request

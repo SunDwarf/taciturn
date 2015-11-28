@@ -27,3 +27,6 @@ API_FORUM = "www.example.com"
 
 # Set logging level
 LOG_LEVEL = logging.INFO
+
+# Set language
+LANGUAGE = "en"
