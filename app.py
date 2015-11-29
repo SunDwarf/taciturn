@@ -5,9 +5,14 @@ import sys
 from celery import Celery
 from flask import Flask
 from flask.ext.babel import Babel
-import init
+
+from taciturn import locale
+
+# --> Begin App
 
 __version__ = (0, 1, 0)
+
+# --> Create app
 
 app = Flask(__name__)
 
@@ -29,15 +34,16 @@ root.addHandler(consoleHandler)
 
 logger = logging.getLogger("taciturn")
 
-# --> Init Babel
-babel = Babel(app)
-
-@babel.localeselector
-def get_locale():
-    # Return the configured language.
-    return app.config.get("LANGUAGE", "en")
+# --> Begin init
 
 logger.info("taciturn starting up...")
+
+# --> Init language
+language = locale.Locale.get(lang=app.config["LANGUAGE"])
+
+# --> Import init
+# Import this after language setup, otherwise our Client sets it up for us, by accident.
+import init
 
 # --> Init celery
 
@@ -86,6 +92,9 @@ logger.info("Loading plugins...")
 plugins = init.plugin_init(app, celery, client)
 
 logger.info("Loaded plugins.")
+
+# --> Load locale files
+language.load_all()
 
 # --> Done.
 logger.info("tactiturn startup finished.")

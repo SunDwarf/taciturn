@@ -1,0 +1,7 @@
+core.version: My version is {ver}.
+core.footer: "
+  \n
+  ------
+  \n
+  *I am a bot, this message was sent automatically.*\n
+  Powered by [taciturn.](https://github.com/SunDwarf/taciturn)"

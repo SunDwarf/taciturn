@@ -1,7 +1,11 @@
 from taciturn.registry import nick_ping_registry
+from taciturn.locale import Locale
 
 from app import celery, client, __version__
 from flask_babel import gettext
+
+loc = Locale.get()
+
 
 @celery.task
 def username_ping(data: list):
@@ -30,6 +34,6 @@ def version_ping(data, *args: list):
     # Get topic ID.
     topic_id = data[0]["topic_id"]
     # Post a new message.
-    client.create_post(gettext("My version is %(version)s.", version='.'.join(map(str, __version__))),
+    client.create_post(loc.gettext("core.version").format(ver='.'.join(map(str, __version__))),
         topic_id=topic_id)
 

@@ -7,6 +7,7 @@ from app import celery, app
 from pprint import pformat
 
 from taciturn import registry
+from taciturn.locale import Locale
 
 
 core_bp = Blueprint('core', "taciturn",
@@ -73,6 +74,11 @@ def info():
 Config:
 {cfg}
 
+Locale database - Custom:
+{loc1}
+Locale database - Default:
+{loc2}
+
 Registry - Post Handlers:
 {ph}
 
@@ -82,5 +88,6 @@ Registry - Topic Handlers:
 Registry - Nickping Handlers:
 {np}
 """.format(path=pformat(sys.path), cfg=pformat(cfg), ph=pformat(registry.post_created_registry),
-            th=pformat(registry.topic_created_registry), np=pformat(registry.nick_ping_registry))
+            th=pformat(registry.topic_created_registry), np=pformat(registry.nick_ping_registry),
+            loc2=pformat(Locale.get().def_msgs), loc1=pformat(Locale.get().msgs))
     return fmt, 200, {"Content-Type": "text/plain"}
